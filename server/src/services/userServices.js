@@ -42,7 +42,7 @@ const createNewUser = async (firstName, lastName, email, gender) => {
 
     await newUser.save();
 
-    // await sendVerification(newUser.email, verificationData?.verificationUrl);
+    await sendVerification(newUser.email, verificationData?.verificationUrl);
     return { email: newUser.email, message: "User created successfully." };
   } catch (error) {
     throw new CustomErrorHandler("Internal Server Error", 500);

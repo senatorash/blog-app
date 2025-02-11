@@ -13,7 +13,7 @@ const { sendPasswordReset } = require("../helpers/emailHelpers");
 const updateUserPassword = async (email, password) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("User does not exist");
+    throw new CustomErrorHandler("User does not exist");
   }
 
   if (user) {
@@ -36,7 +36,9 @@ const updateUserPassword = async (email, password) => {
           user.resetPassword = undefined;
           await user.save();
         } else {
-          throw new Error("You have not requested for a password reset");
+          throw new CustomErrorHandler(
+            "You have not requested for a password reset"
+          );
         }
       }
     }
@@ -81,7 +83,6 @@ const userLogin = async (email, password) => {
       `${REFRESH_TOKEN_EXPIRES_IN}h`,
       JWT_SECRET
     );
-    // console.log(JWT_SECRET, REFRESH_TOKEN_EXPIRES_IN, ACCESS_TOKEN_EXPIRES_IN);
     return { accessToken, refreshToken };
   } catch (error) {
     throw new CustomErrorHandler("Internal Server Error", 500);
@@ -94,28 +95,32 @@ const newAccessToken = async (headers) => {
       throw new CustomErrorHandler("Invalid Token", 403);
     }
 
-    const refreshToken = refreshToken.split(" ")[1];
+    const refreshToken = headers.split(" ")[1];
     const verifiedPayload = verifyToken(refreshToken, JWT_SECRET);
 
-    if (verifiedPayload) {
-      const payload = {
-        userId: verifiedPayload.userId,
-        firstName: verifiedPayload.firstName,
-        lastName: verifiedPayload.lastName,
-        email: verifiedPayload.email,
-        isVerified: verifiedPayload.isVerified,
-        // profilePicture: verifiedPayload.profilePicture,
-      };
-
-      const accessToken = generateToken(
-        payload,
-        `${ACCESS_TOKEN_EXPIRES_IN}h`,
-        JWT_SECRET
-      );
-
-      return accessToken;
+    if (!verifiedPayload) {
+      throw new CustomErrorHandler("Invalid Token", 403);
     }
+
+    const payLoad = {
+      userId: verifiedPayload.userId,
+      firstName: verifiedPayload.firstName,
+      lastName: verifiedPayload.lastName,
+      email: verifiedPayload.email,
+      isVerified: verifiedPayload.isVerified,
+      // profilePicture: verifiedPayload.profilePicture,
+    };
+
+    // generate new access token
+    const accessToken = generateToken(
+      payLoad,
+      `${ACCESS_TOKEN_EXPIRES_IN}h`,
+      JWT_SECRET
+    );
+
+    return { accessToken, payLoad };
   } catch (error) {
+    console.log(error);
     throw new CustomErrorHandler("Internal Server Error", 500);
   }
 };

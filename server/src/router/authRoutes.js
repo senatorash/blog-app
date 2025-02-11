@@ -16,6 +16,7 @@ const {
   checkValidationErrors,
 } = require("../middleware/validator/userValidator");
 const requireSignin = require("../middleware/requireSignin");
+const googleAuth = require("../controller/user/google/googleAuth");
 const authRouter = express.Router();
 
 authRouter.post(
@@ -26,6 +27,7 @@ authRouter.post(
 );
 
 authRouter.post("/login", validateLogin(), checkValidationErrors, loginUser);
+authRouter.post("/google/login", googleAuth);
 authRouter.post("/logout", requireSignin, logoutUser);
 authRouter.post(
   "/reset-password",

@@ -90,15 +90,19 @@ const verifyPasswordResetData = async () => {
   }
 };
 
-const generateNewAccessToken = async (req, res) => {
+const generateNewAccessToken = async (req, res, next) => {
   try {
     const headers = req.headers["authorization"];
 
     const authCredentials = await newAccessToken(headers);
 
+    if (!authCredentials) {
+      return res.status(403).json({ error: "Invalid Token" });
+    }
+
     if (authCredentials) {
       const cookieOptions = {
-        expires: new Date(Date.now() + 3600),
+        expires: new Date(Date.now() + 3600 * 1000),
         maxAge: 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "None",
@@ -107,9 +111,14 @@ const generateNewAccessToken = async (req, res) => {
 
       return res
         .cookie("a_t", authCredentials.accessToken, cookieOptions)
-        .json({ message: "mew access token generated successfully" });
+        .json({
+          message: "New Access Token Generated Successfully",
+          accessToken: authCredentials.accessToken,
+          user: authCredentials.payLoad,
+        });
     }
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

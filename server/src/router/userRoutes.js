@@ -22,7 +22,7 @@ const {
 const userRouter = express.Router();
 
 userRouter.post("/", validateUser(), checkValidationErrors, createUser);
-userRouter.post("/verify-user", verifyUser);
+userRouter.post("/verify", verifyUser);
 userRouter.get("/me", requireSignin, getCurrentUser);
 userRouter.put(
   "/upload-image",
