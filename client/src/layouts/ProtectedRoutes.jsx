@@ -1,3 +1,2 @@
-const ProtectedRoutes = ()=> {
-    
-}
+const ProtectedRoutes = () => {};
+export default ProtectedRoutes;

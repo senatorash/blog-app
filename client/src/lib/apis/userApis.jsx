@@ -3,7 +3,7 @@ import { clearCurrentUser, setCurrentUser } from "../redux/userSlice";
 
 let baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const userApis = createApi({
+export const userApis = createApi({
   reducerPath: "userApis",
   baseQuery: fetchBaseQuery({ baseUrl }),
 
@@ -121,6 +121,7 @@ const userApis = createApi({
     }),
   }),
 });
+
 export const {
   useCreateUserMutation,
   useVerifyUserMutation,
