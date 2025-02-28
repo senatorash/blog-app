@@ -7,6 +7,8 @@ const {
   blogById,
   checkBlogExistByTitle,
   publishedState,
+  updateBlogData,
+  removeBlog,
 } = require("../../services/blogServices");
 
 const createBlog = async (req, res, next) => {
@@ -32,7 +34,7 @@ const createBlog = async (req, res, next) => {
   }
 };
 
-const getBlogs = async (req, res, next) => {
+const getAllBlogs = async (req, res, next) => {
   try {
     const { skip, limit } = getPagination(req.query);
     const getAllBlogs = await allBlogs(skip, limit);
@@ -48,8 +50,8 @@ const getBlogs = async (req, res, next) => {
 
 const getBlogById = async (req, res, next) => {
   try {
-    const { blogTitle } = req.params;
-    const blog = await blogById(blogTitle);
+    const { blogId } = req.params;
+    const blog = await blogById(blogId);
     if (!blog) {
       return res.status(404).json({ error: "Blog not found" });
     }
@@ -57,6 +59,17 @@ const getBlogById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+const getBlogByTitle = async () => {
+  try {
+    const { blogTitle } = req.params;
+    const blog = await checkBlogExistByTitle(blogTitle);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    return res.status(200).json({ message: "Blog found successfully", blog });
+  } catch (error) {}
 };
 
 const updatePublishedState = async (req, res) => {
@@ -84,7 +97,7 @@ const getAllPublishedBlogs = async (req, res) => {
     const { skip, limit } = getPagination(req.query);
     const blogs = await Blog.find({ isPublished: true })
       .sort({ created: -1 })
-      .skip(limit)
+      .skip(skip)
       .limit(limit);
     return res
       .status(200)
@@ -94,10 +107,41 @@ const getAllPublishedBlogs = async (req, res) => {
   }
 };
 
+const editBlog = async (req, res, next) => {
+  try {
+    const { blogId } = req.params;
+    const { title, description, content } = req.body;
+
+    const blog = await updateBlogData(blogId, title, description, content);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    return res.status(200).json({ message: "Blog updated successfully", blog });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deletedBlog = async (req, res, next) => {
+  try {
+    const { blogId } = req.params;
+    const blog = await removeBlog(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    return res.status(200).json({ message: "Blog deleted successfully", blog });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createBlog,
-  getBlogs,
+  getAllBlogs,
   getBlogById,
   getAllPublishedBlogs,
   updatePublishedState,
+  getBlogByTitle,
+  editBlog,
+  deletedBlog,
 };

@@ -25,9 +25,9 @@ const allBlogs = async (skip, limit) => {
   }
 };
 
-const blogById = async (blogTitle) => {
+const blogById = async (blogId) => {
   try {
-    const blog = await Blog.findOne({ title: blogTitle });
+    const blog = await Blog.findById({ blogId });
     if (!blog) {
       throw new Error();
     }
@@ -58,10 +58,34 @@ const checkBlogExistByTitle = async (blogTitle) => {
   }
 };
 
+const updateBlogData = async (blogId, title, description, content) => {
+  try {
+    const blogData = { title, description, content };
+
+    const updatedBlog = await Blog.findByIdAndUpdate(blogId, blogData);
+
+    if (updatedBlog) {
+      return updatedBlog;
+    }
+  } catch (error) {}
+};
+
+const removeBlog = async (blogId) => {
+  try {
+    const deletedBlog = await Blog.findByIdAndDelete(blogId);
+
+    if (deletedBlog) {
+      return deletedBlog;
+    }
+  } catch (error) {}
+};
+
 module.exports = {
   createNewBlog,
   allBlogs,
   blogById,
   publishedState,
   checkBlogExistByTitle,
+  updateBlogData,
+  removeBlog,
 };
