@@ -29,7 +29,7 @@ const generateUrl = async (userId) => {
       Buffer.from(verificationToken).toString("base64");
 
     return {
-      verificationUrl: `${FRONTEND_URL}/verify/${encodedVerificationToken}`,
+      verificationUrl: `${FRONTEND_URL}/auth/verify/${encodedVerificationToken}`,
       verificationToken,
       expiresAt: verificationData?.verificationTokenExpires,
     };

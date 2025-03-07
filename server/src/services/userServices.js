@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const User = require("../model/userModel");
 const { sendVerification } = require("../helpers/emailHelpers");
 const generateUrl = require("../helpers/verification/verificationUrl");
@@ -45,6 +45,7 @@ const createNewUser = async (firstName, lastName, email, gender) => {
     await sendVerification(newUser.email, verificationData?.verificationUrl);
     return { email: newUser.email, message: "User created successfully." };
   } catch (error) {
+    console.log(error);
     throw new CustomErrorHandler("Internal Server Error", 500);
   }
 };

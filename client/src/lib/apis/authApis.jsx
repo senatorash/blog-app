@@ -1,8 +1,8 @@
-const { createApi, fetchBaseQuery } = require("@reduxjs/toolkit/query/react");
-const { userApis } = require("./userApis");
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { userApis } from "./userApis";
 import { clearCurrentUser } from "../redux/userSlice";
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
 export const authApis = createApi({
   reducerPath: "authApis",
   baseQuery: fetchBaseQuery({ baseUrl }),
@@ -56,12 +56,19 @@ export const authApis = createApi({
       },
     }),
 
+    setUserPassword: builder.mutation({
+      query: (payLoad) => ({
+        url: "/auth/set-password",
+        method: "POST",
+        body: payLoad,
+      }),
+    }),
+
     resetUserPassword: builder.mutation({
       query: (payLoad) => ({
         url: "/auth/reset-password",
         method: "POST",
         body: payLoad,
-        credentials: "include",
       }),
     }),
   }),
@@ -71,5 +78,6 @@ export const {
   useLoginUserMutation,
   useLoginUserWithGoogleMutation,
   useLogoutUserMutation,
+  useSetUserPasswordMutation,
   useResetUserPasswordMutation,
 } = authApis;

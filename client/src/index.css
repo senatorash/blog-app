@@ -13,8 +13,96 @@
   -moz-osx-font-smoothing: grayscale;
 } */
 
-/*
+/* Modal  */
+.offcanvas {
+  background-color: #111;
+  color: white;
+  width: 80%;
+  /* max-width: 300px; */
+}
 
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+/* Menu Navigation */
+.offcanvas-body nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.offcanvas-body nav ul li {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.offcanvas-body nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.offcanvas-body nav ul li a:hover {
+  color: #007bff;
+}
+
+/* Adjust icons */
+.offcanvas-body nav ul li svg {
+  font-size: 22px;
+}
+
+/* Position Logout at the Bottom */
+.offcanvas-body nav ul li:last-child {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.btn-close {
+  filter: invert(1);
+  font-size: 22px;
+}
+
+/* Create Blog Button */
+.btn-secondary {
+  /* background-color: #f39c12 !important; */
+  border: none;
+  padding: 10px !important;
+  text-align: center;
+  width: 100%;
+}
+
+.btn-secondary p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.btn-secondary:hover {
+  background-color: #007bff !important;
+}
+
+/*
 TemplateMo 570 Chain App Dev
 
 https://templatemo.com/tm-570-chain-app-dev

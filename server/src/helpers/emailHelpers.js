@@ -93,7 +93,7 @@ const sendVerification = async (email, verificationUrl) => {
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center" bgcolor="#1a82e2" style="border-radius: 6px; padding: 16px; font-size: 24px; font-weight: bold; color: #ffffff;">
-                          ${otp}
+                          ${verificationUrl}
                         </td>
                       </tr>
                     </table>

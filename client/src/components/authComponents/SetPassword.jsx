@@ -1,13 +1,36 @@
-import { MdLock } from "react-icons/md";
+import { useEffect, useState } from "react";
 import { FaUserLock } from "react-icons/fa";
 import AOS from "aos";
+import { useParams, useNavigate } from "react-router-dom";
+import { useVerifyUserMutation } from "../../lib/apis/userApis";
+import { useSetUserPasswordMutation } from "../../lib/apis/authApis";
 import classes from "./Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 
 const SetPassword = () => {
-  AOS.init({
-    duration: 300,
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const [setUserPassword, { isError, isSuccess, data, error }] =
+    useSetUserPasswordMutation();
+
+  const [
+    verifyUser,
+    { isError: _isError, isSuccess: _isSuccess, data: _data, error: _error },
+  ] = useVerifyUserMutation();
+
+  console.log(data);
+  console.log(_data);
+  useEffect(() => {
+    AOS.init({
+      duration: 500,
+    });
+  }, []);
+
   return (
     <div data-aos="fade-up">
       <form>
@@ -45,6 +68,7 @@ const SetPassword = () => {
                 className="form-control"
                 type="email"
                 placeholder="Email"
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
             <div className={`form-group mb-3 ${classes.input_field}`}>
@@ -52,6 +76,9 @@ const SetPassword = () => {
                 className="form-control"
                 type="password"
                 placeholder="Password"
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
               />
             </div>
             <div className={`form-group mb-3 ${classes.input_field}`}>
@@ -59,6 +86,7 @@ const SetPassword = () => {
                 className="form-control"
                 type="password"
                 placeholder="Confirm Password"
+                onChange={(event) => setConfirmPassword(event.target.value)}
               />
             </div>
             {/* <div className={`mb-3 ${classes.forget}`}>

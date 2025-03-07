@@ -1,18 +1,44 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import AOS from "aos";
 import { MdAppRegistration } from "react-icons/md";
+import { useCreateUserMutation } from "../../lib/apis/userApis";
 import classes from "../authComponents/Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 import { useEffect } from "react";
 const Signup = () => {
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+
+  const [createUser, { isError, isSuccess, data, error }] =
+    useCreateUserMutation();
+
+  console.log(data);
+  console.log(error);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!email || !firstName || !lastName || !gender) {
+      return;
+    }
+
+    return await createUser({
+      email,
+      firstName,
+      lastName,
+      gender,
+    });
+  };
+
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 300,
     });
   }, []);
   return (
     <div data-aos="fade-up" delay="200">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className={`row ${classes.formContainer} align-items-center `}>
           {/* <div className="col-lg-3"></div> */}
 
@@ -49,6 +75,7 @@ const Signup = () => {
                 className="form-control"
                 type="email"
                 placeholder="Email"
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
             <div className={`form-group mb-3 ${classes.input_field}`}>
@@ -56,6 +83,7 @@ const Signup = () => {
                 className="form-control"
                 type="text"
                 placeholder="First Name"
+                onChange={(event) => setFirstName(event.target.value)}
               />
             </div>
             <div className={`form-group mb-3 ${classes.input_field}`}>
@@ -63,12 +91,14 @@ const Signup = () => {
                 className="form-control"
                 type="text"
                 placeholder="Last Name"
+                onChange={(event) => setLastName(event.target.value)}
               />
             </div>
             <div className={`form-group mb-3 ${classes.input_field}`}>
               <select
                 className={`form-control ${classes.select_opt}`}
-                defaultValue=""
+                value={gender}
+                onChange={(event) => setGender(event.target.value)}
               >
                 <option value="" disabled>
                   Gender

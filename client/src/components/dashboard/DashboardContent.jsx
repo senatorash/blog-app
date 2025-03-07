@@ -3,11 +3,14 @@ import classes from "./Dashboard.module.css";
 const DashboardContent = ({ showSidebar }) => {
   return (
     <div
-      class={`${classes.main_content} 
-      ${showSidebar ? "" : classes.fullWidth}
+      className={`${classes.main_content} 
+      ${showSidebar ? `${classes.fullWidth}` : ""}
     `}
     >
-      <h1>Welcome Back, Ashimi</h1>
+      <h1 className={`${classes.main_content_text}`}>
+        Welcome Back,{" "}
+        <span style={{ color: "#007bff", fontWeight: "800" }}>Ashimi</span>
+      </h1>
       <p>Lots of content here...</p>
     </div>
   );

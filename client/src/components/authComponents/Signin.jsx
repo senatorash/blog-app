@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import { MdLogin } from "react-icons/md";
-import { MdAppRegistration } from "react-icons/md";
+import { GoogleLogin } from "@react-oauth/google";
 import classes from "../authComponents/Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 import { useEffect } from "react";
@@ -74,6 +74,8 @@ const Signin = () => {
 
               <Link style={{ fontSize: "13px" }}>Forget Password?</Link>
             </div>
+
+            <GoogleLogin onSuccess="" />
             <div className="form-group mb-3">
               <input
                 type="submit"

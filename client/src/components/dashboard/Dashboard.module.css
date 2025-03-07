@@ -1,8 +1,8 @@
 .dashboard {
   display: flex;
   height: 100%;
-  margin-top: 100px;
-  overflow-y: hidden;
+  /* margin-top: 100px; */
+  /* overflow-y: hidden; */
 }
 
 .sidebar {
@@ -12,6 +12,10 @@
   padding: 20px;
   position: fixed;
   height: 100%;
+}
+
+.nav_icons ul li {
+  color: #fff !important;
 }
 /* 
 @media only screen and (max-width: 600px) {
@@ -30,11 +34,12 @@
 
 .name {
   background-color: #fff;
-  color: #000;
-  font-size: 15px;
-  padding: 10px;
+  width: 50px;
+  color: #000 !important;
+  font-size: 15px !important;
+  padding: 8px !important;
   border-radius: 5px;
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .content {
@@ -52,12 +57,38 @@
 .main_content {
   transition: all 0.3s ease-in-out;
   margin-top: 15px;
-  margin-left: 100px;
+  margin-left: 90px;
+}
+
+.main_content_text {
+  font-size: 3rem;
+}
+
+@media (max-width: 992px) {
+  /* Medium screens */
+  .main_content_text {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Small screens */
+  .main_content_text {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Extra small screens */
+  .main_content_text {
+    font-size: 1rem;
+  }
 }
 
 .withSidebar {
   transition: all 0.3s ease-in-out;
-  transform: translateX(100px);
+  transform: translateX(-200px);
+  z-index: -1;
   opacity: 0;
   height: 80vh;
   overflow-y: auto;
@@ -70,4 +101,14 @@
   transition: all 0.3s ease-in-out;
   margin-top: 20px;
   margin-left: 350px !important;
+}
+
+/* Main side bar form  */
+.form_group inpu {
+  width: 100% !important;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #222;
+  color: white;
 }

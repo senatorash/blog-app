@@ -6,8 +6,11 @@ import Signup from "../components/authComponents/Signup";
 import SetPassword from "../components/authComponents/SetPassword";
 import ResetPassword from "../components/authComponents/ResetPasswowrd";
 import Dashboard from "../components/dashboard/Dashboard";
+import ProtectedRoutes from "./ProtectedRoutes";
+import { useSelector } from "react-redux";
 
 const AppRoutes = () => {
+  const { user } = useSelector((state) => state.userState);
   return (
     <Routes>
       <Route
@@ -16,7 +19,11 @@ const AppRoutes = () => {
           <section style={{ marginTop: "150px" }}>Page Not Found</section>
         }
       />
-      <Route path="dashboard" element={<Dashboard />} />
+
+      <Route
+        path="/dashboard"
+        element={<ProtectedRoutes user={user}></ProtectedRoutes>}
+      />
       <Route path="/" element={<HomePage />} />
 
       <Route path="/auth" element={<AuthPage />}>

@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from "reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { clearCurrentUser, setCurrentUser } from "../redux/userSlice";
 
-let baseUrl = process.env.REACT_APP_API_BASE_URL;
+let baseUrl = import.meta.env.VITE_API_URL;
 
 export const userApis = createApi({
   reducerPath: "userApis",
