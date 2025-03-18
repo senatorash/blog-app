@@ -18,9 +18,10 @@ export const userApis = createApi({
 
     verifyUser: builder.mutation({
       query: (payload) => ({
-        url: "/user/verify-user",
+        url: "/user/verify",
         method: "POST",
         body: payload,
+        credentials: "include",
       }),
     }),
 
@@ -35,7 +36,7 @@ export const userApis = createApi({
         try {
           const { data } = await queryFulfilled;
           console.log(data);
-          dispatch(setCurrentUser(data?.data));
+          dispatch(setCurrentUser(data?.user));
         } catch (error) {
           if (error?.error?.status === 403) {
             console.log("Access token expired. Attempting refresh...");
@@ -44,7 +45,7 @@ export const userApis = createApi({
             const refreshToken = localStorage.getItem("refreshToken");
 
             if (refreshToken) {
-              const baseUrl = process.env.REACT_APP_API_BASE_URL;
+              const baseUrl = import.meta.env.VITE_API_URL;
 
               try {
                 const refreshResponse = await fetch(`${baseUrl}/auth/token`, {

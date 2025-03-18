@@ -5,6 +5,7 @@ import { useCreateUserMutation } from "../../lib/apis/userApis";
 import classes from "../authComponents/Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 import { useEffect } from "react";
+import SuccessCard from "../success/SuccessCard";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -33,7 +34,8 @@ const Signup = () => {
 
   useEffect(() => {
     AOS.init({
-      duration: 300,
+      duration: 1000,
+      once: false,
     });
   }, []);
   return (
@@ -41,7 +43,8 @@ const Signup = () => {
       <form onSubmit={handleSubmit}>
         <div className={`row ${classes.formContainer} align-items-center `}>
           {/* <div className="col-lg-3"></div> */}
-
+          {isError && <ErrorCard errorMessage={error.data.message} />}
+          {isSuccess && <SuccessCard successMessage={data.message} />}
           <div className="col-lg-6  col-md-6 ">
             <div
               data-aos="fade-down"

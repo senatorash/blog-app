@@ -74,7 +74,7 @@ const sendVerification = async (email, verificationUrl) => {
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: Arial, sans-serif; border-top: 3px solid #d4dadf;">
-                    <h1 style="margin: 0; font-size: 32px; font-weight: 700;">Your One-Time Password (OTP)</h1>
+                    <h1 style="margin: 0; font-size: 32px; font-weight: 700;">Confirm Your Email Address</h1>
                   </td>
                 </tr>
               </table>
@@ -85,7 +85,9 @@ const sendVerification = async (email, verificationUrl) => {
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
                 <tr>
                   <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: Arial, sans-serif; font-size: 16px;">
-                    <p style="margin: 0">Use the OTP below to verify your email address. This OTP will expire in 5 minutes.</p>
+                    <p style="margin: 0"> Tap the button below to confirm your email address. If you
+                      didn't create an account with us, you can safely delete this
+                      email.</p>
                   </td>
                 </tr>
                 <tr>
@@ -93,7 +95,7 @@ const sendVerification = async (email, verificationUrl) => {
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center" bgcolor="#1a82e2" style="border-radius: 6px; padding: 16px; font-size: 24px; font-weight: bold; color: #ffffff;">
-                          ${verificationUrl}
+                         <a href="${verificationUrl}" target="_blank" style="color: #000000; text-decoration: none; ">Complete Registration</a>
                         </td>
                       </tr>
                     </table>
@@ -304,7 +306,7 @@ const sendPasswordReset = async (email, resetPasswordUrl) => {
                         line-height: 48px;
                       "
                     >
-                      Confirm Your Email Address
+                      Reset Your Password
                     </h1>
                   </td>
                 </tr>
@@ -365,7 +367,7 @@ const sendPasswordReset = async (email, resetPasswordUrl) => {
                                     text-decoration: none;
                                     border-radius: 6px;
                                   "
-                                  >Complete Registeration</a
+                                  >Reset Password</a
                                 >
                               </td>
                             </tr>

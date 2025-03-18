@@ -13,7 +13,7 @@ const { sendPasswordReset } = require("../helpers/emailHelpers");
 const updateUserPassword = async (email, password) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new CustomErrorHandler("User does not exist");
+    throw new CustomErrorHandler("User does not exist", 404);
   }
 
   if (user) {
@@ -30,63 +30,66 @@ const updateUserPassword = async (email, password) => {
         await user.save();
         return user;
       } else {
-        if (user.resetPassword) {
-          user.password = hashedPassword;
-          user.resetPasswordExpires = undefined;
-          user.resetPassword = undefined;
-          await user.save();
-        } else {
+        if (!user.resetPasswordToken) {
           throw new CustomErrorHandler(
-            "You have not requested for a password reset"
+            "You have not requested for a password reset",
+            400
           );
         }
+        user.password = hashedPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        await user.save();
+        return user;
       }
     }
   }
 };
 
 const userLogin = async (email, password) => {
-  try {
-    const userExist = await User.findOne({ email });
+  // try {
+  const userExist = await User.findOne({ email });
 
-    if (!userExist) {
-      throw new CustomErrorHandler("User with this email does not exists", 403);
-    }
-
-    const passwordMatch = bcrypt.compare(password, userExist.password);
-
-    if (!userExist.isVerified) {
-      throw new CustomErrorHandler("User is not verified", 403);
-    }
-
-    if (!passwordMatch) {
-      throw new CustomErrorHandler("Invalid Login Credentials", 403);
-    }
-
-    const userData = {
-      userId: userExist._id,
-      firstName: userExist.firstName,
-      lastName: userExist.lastName,
-      email: userExist.email,
-      isVerified: userExist.isVerified,
-      profilePicture: userExist.profilePicture,
-    };
-
-    const accessToken = generateToken(
-      userData,
-      `${ACCESS_TOKEN_EXPIRES_IN}h`,
-      JWT_SECRET
-    );
-
-    const refreshToken = generateToken(
-      userData,
-      `${REFRESH_TOKEN_EXPIRES_IN}h`,
-      JWT_SECRET
-    );
-    return { accessToken, refreshToken };
-  } catch (error) {
-    throw new CustomErrorHandler("Internal Server Error", 500);
+  if (!userExist) {
+    throw new CustomErrorHandler("User with this email does not exists", 403);
   }
+
+  const passwordMatch = await bcrypt.compare(password, userExist.password);
+
+  if (!userExist.isVerified) {
+    throw new CustomErrorHandler("User is not verified", 403);
+  }
+
+  if (!passwordMatch) {
+    throw new CustomErrorHandler("Invalid Login Credentials", 403);
+  }
+
+  const userData = {
+    userId: userExist._id,
+    firstName: userExist.firstName,
+    lastName: userExist.lastName,
+    email: userExist.email,
+    isVerified: userExist.isVerified,
+    profilePicture: userExist.profilePicture,
+  };
+
+  const accessToken = generateToken(
+    userData,
+    `${ACCESS_TOKEN_EXPIRES_IN}h`,
+    JWT_SECRET
+  );
+
+  const refreshToken = generateToken(
+    userData,
+    `${REFRESH_TOKEN_EXPIRES_IN}h`,
+    JWT_SECRET
+  );
+  return { accessToken, refreshToken };
+  // } catch (error) {
+  // console.log(error);
+  // throw new CustomErrorHandler("Internal Server Error", 500);
+  // }
 };
 
 const newAccessToken = async (headers) => {

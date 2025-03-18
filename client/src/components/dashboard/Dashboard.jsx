@@ -9,7 +9,9 @@ import {
   FaHome,
   FaSearch,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { FaBarsStaggered } from "react-icons/fa6";
+import { useGetCurrentUserMutation } from "../../lib/apis/userApis";
 import classes from "./Dashboard.module.css"; // Custom CSS for styling
 import DashboardContent from "./DashboardContent";
 
@@ -17,6 +19,20 @@ const Dashboard = () => {
   // const [isScrolled, setIsScrolled] = useState(false);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+
+  const [getCurrentUser, { data }] = useGetCurrentUserMutation();
+  console.log(data);
+
+  const { user } = useSelector((state) => state.userState);
+  console.log(user);
+
+  const capitalise = (str) => str.charAt(0).toUpperCase();
+  const last = capitalise(user?.lastName[0]);
+  const first = capitalise(user?.firstName);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   useEffect(() => {
     AOS.init({
@@ -77,7 +93,7 @@ const Dashboard = () => {
         <div className="offcanvas-body">
           <nav>
             <ul className={`mb-5 ${classes.name}`}>
-              <h4>AS</h4>
+              <h4>{`${last}${first}`}</h4>
             </ul>
             <ul
               style={{ cursor: "pointer" }}

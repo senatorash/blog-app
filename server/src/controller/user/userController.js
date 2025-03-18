@@ -29,10 +29,10 @@ const verifyUser = async (req, res) => {
     const { userId, verificationToken } = req.body;
 
     const userIsVerified = await verifyUserToken(userId, verificationToken);
-    console.log(userIsVerified);
     if (userIsVerified) {
       return res.status(200).json({
         message: `verification for ${userIsVerified.email} is successful. Proceed to choose a valid password to complete registration`,
+        userIsVerified,
       });
     }
   } catch (error) {

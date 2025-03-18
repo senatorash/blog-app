@@ -29,7 +29,7 @@ const generatePasswordResetUrl = async (userId) => {
       Buffer.from(resetPasswordToken).toString("base64");
 
     return {
-      resetPasswordUrl: `${FRONTEND_URL}/auth/verify/reset-password/${encodedPasswordResetToken}`,
+      resetPasswordUrl: `${FRONTEND_URL}/auth/verify-reset-password/${encodedPasswordResetToken}`,
       resetPasswordToken,
       expiresAt: resetPasswordData.resetPasswordTokenExpires,
     };

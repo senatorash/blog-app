@@ -2,22 +2,24 @@ import { useEffect, useState } from "react";
 import { FaUserLock } from "react-icons/fa";
 import AOS from "aos";
 import { useParams, useNavigate } from "react-router-dom";
-import { useVerifyUserMutation } from "../../lib/apis/userApis";
-import { useSetUserPasswordMutation } from "../../lib/apis/authApis";
+import {
+  useSetUserPasswordMutation,
+  useVerifyPasswordResetDataMutation,
+} from "../../lib/apis/authApis";
 import usePasswordValidator from "../../hooks/usePasswordValidator";
 import classes from "./Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 import ErrorCard from "../error/ErrorCard";
 import SuccessCard from "../success/SuccessCard";
 
-const SetPassword = () => {
+const SetNewPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const params = useParams();
   const navigate = useNavigate();
 
-  const { verificationData } = params;
+  const { resetPasswordData } = params;
 
   const [setUserPassword, { isError, isLoading, isSuccess, data, error }] =
     useSetUserPasswordMutation();
@@ -26,16 +28,19 @@ const SetPassword = () => {
   console.log(error);
   console.log(isError);
   const [
-    verifyUser,
+    verifyPasswordResetData,
     { isError: _isError, isSuccess: _isSuccess, data: _data, error: _error },
-  ] = useVerifyUserMutation();
+  ] = useVerifyPasswordResetDataMutation();
+
+  console.log(_data);
 
   useEffect(() => {
-    if (verificationData) {
-      const data = atob(verificationData).split(":");
-      verifyUser({
+    if (resetPasswordData) {
+      const data = atob(resetPasswordData).split(":");
+
+      verifyPasswordResetData({
         userId: data[1],
-        verificationToken: data[0],
+        resetPasswordToken: data[0],
       });
     }
   }, []);
@@ -53,11 +58,17 @@ const SetPassword = () => {
     // }
 
     return await setUserPassword({
-      email: _data?.userIsVerified?.email,
+      email: _data?.response?.email,
       password: password,
       confirmPassword: confirmPassword,
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/auth/signin");
+    }
+  }, []);
 
   useEffect(() => {
     AOS.init({
@@ -181,4 +192,4 @@ const SetPassword = () => {
     </div>
   );
 };
-export default SetPassword;
+export default SetNewPassword;

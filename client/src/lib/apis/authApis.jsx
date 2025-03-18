@@ -71,6 +71,15 @@ export const authApis = createApi({
         body: payLoad,
       }),
     }),
+
+    verifyPasswordResetData: builder.mutation({
+      query: (payLoad) => ({
+        url: "/auth/verify-reset-password-token",
+        method: "POST",
+        body: payLoad,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -80,4 +89,5 @@ export const {
   useLogoutUserMutation,
   useSetUserPasswordMutation,
   useResetUserPasswordMutation,
+  useVerifyPasswordResetDataMutation,
 } = authApis;

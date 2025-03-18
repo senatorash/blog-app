@@ -32,7 +32,7 @@ const verifyPasswordResetToken = async (userId, resetPasswordToken) => {
     throw new CustomErrorHandler("User does not exist", 404);
   }
 
-  if (user.resetPasswordToken) {
+  if (!user.resetPasswordToken) {
     throw new CustomErrorHandler("Token does not exist or It's invalid");
   }
 

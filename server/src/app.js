@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const userRouter = require("./router/userRoutes");
 const authRouter = require("./router/authRoutes");
+const GlobalErrorHandler = require("./lib/GlobalErrorHandler");
 
 app.use(express.json());
 
@@ -23,4 +24,5 @@ app.get("/", (req, res) => {
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 
+app.use(GlobalErrorHandler);
 module.exports = app;

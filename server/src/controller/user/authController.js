@@ -16,7 +16,7 @@ const setUserPassword = async (req, res, next) => {
     if (updatedUser) {
       return res.status(200).json({
         message:
-          "Registration successful, sign in to continue enjoying our services",
+          "Your Password has been Successfully Updated, sign in to continue enjoying our services",
       });
     }
   } catch (error) {
@@ -75,15 +75,16 @@ const resetUserPassword = async (req, res, next) => {
   }
 };
 
-const verifyPasswordResetData = async () => {
+const verifyPasswordResetData = async (req, res, next) => {
   try {
     const { userId, resetPasswordToken } = req.body;
     const response = await verifyPasswordResetToken(userId, resetPasswordToken);
 
     if (response) {
-      return res
-        .status(200)
-        .json({ email: response.email }, "select a new password");
+      return res.status(200).json({
+        message: `Verification for ${response.email} is successful. Proceed to select a new password`,
+        response,
+      });
     }
   } catch (error) {
     next(error);

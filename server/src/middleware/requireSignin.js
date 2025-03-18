@@ -20,6 +20,7 @@ const requireSignin = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log(error);
     throw new CustomErrorHandler("Invalid token", 401);
   }
 };

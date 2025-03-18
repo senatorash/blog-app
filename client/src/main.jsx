@@ -12,12 +12,12 @@ import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <GoogleOAuthProvider>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    </GoogleOAuthProvider>
+    {/* <GoogleOAuthProvider> */}
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+    {/* </GoogleOAuthProvider> */}
   </StrictMode>
 );
