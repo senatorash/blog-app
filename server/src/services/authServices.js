@@ -76,7 +76,7 @@ const userLogin = async (email, password) => {
 
   const accessToken = generateToken(
     userData,
-    `${ACCESS_TOKEN_EXPIRES_IN}h`,
+    `${ACCESS_TOKEN_EXPIRES_IN}m`,
     JWT_SECRET
   );
 
@@ -85,11 +85,11 @@ const userLogin = async (email, password) => {
     `${REFRESH_TOKEN_EXPIRES_IN}h`,
     JWT_SECRET
   );
-  return { accessToken, refreshToken };
-  // } catch (error) {
-  // console.log(error);
-  // throw new CustomErrorHandler("Internal Server Error", 500);
-  // }
+
+  const refreshTokenExpiry =
+    Math.floor(Date.now() / 1000) + REFRESH_TOKEN_EXPIRES_IN * 60 * 60;
+
+  return { accessToken, refreshToken, refreshTokenExpiry };
 };
 
 const newAccessToken = async (headers) => {

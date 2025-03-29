@@ -6,6 +6,7 @@ import classes from "../authComponents/Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 import { useEffect } from "react";
 import SuccessCard from "../success/SuccessCard";
+import ErrorCard from "../error/ErrorCard";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");

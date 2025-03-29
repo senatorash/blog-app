@@ -2,21 +2,12 @@ import { useState, useEffect } from "react";
 import AOS from "aos";
 import { Link } from "react-scroll";
 import { FaSignInAlt } from "react-icons/fa";
-import { useGetCurrentUserMutation } from "../lib/apis/userApis";
+// import { useGetCurrentUserMutation } from "../lib/apis/userApis";
 import classes from "./NavBar.module.css";
 import logo from "../assets/ProAsh.png";
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
-  const [getCurrentUser, { isError, data, error, isSuccess }] =
-    useGetCurrentUserMutation();
-
-  console.log(data);
-
-  useEffect(() => {
-    getCurrentUser();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

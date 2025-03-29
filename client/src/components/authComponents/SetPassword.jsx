@@ -22,13 +22,16 @@ const SetPassword = () => {
   const [setUserPassword, { isError, isLoading, isSuccess, data, error }] =
     useSetUserPasswordMutation();
 
-  console.log(data);
-  console.log(error);
-  console.log(isError);
   const [
     verifyUser,
     { isError: _isError, isSuccess: _isSuccess, data: _data, error: _error },
   ] = useVerifyUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/auth/signin");
+    }
+  }, [isSuccess, navigate]);
 
   useEffect(() => {
     if (verificationData) {
@@ -47,10 +50,6 @@ const SetPassword = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // if (!password || confirmPassword) {
-    //   return;
-    // }
 
     return await setUserPassword({
       email: _data?.userIsVerified?.email,
@@ -72,7 +71,7 @@ const SetPassword = () => {
         <div className={`row ${classes.formContainer}`}>
           {/* <div className="col-lg-3"></div> */}
           {/* Success and Error Message for Verification */}
-          {/* {_isError && <ErrorCard errorMessage={_error.data.error} />} */}
+          {_isError && <ErrorCard errorMessage={_error.data.error} />}
           {_isSuccess && (
             <SuccessCard successMessage={_data.message || data.message} />
           )}
@@ -108,6 +107,7 @@ const SetPassword = () => {
                 className="form-control"
                 type="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}

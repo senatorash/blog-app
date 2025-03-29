@@ -38,34 +38,41 @@ export const userApis = createApi({
           console.log(data);
           dispatch(setCurrentUser(data?.user));
         } catch (error) {
-          if (error?.error?.status === 403) {
-            console.log("Access token expired. Attempting refresh...");
-
+          console.log(error);
+          if (error?.error?.status === 403 || error?.error?.status === 401) {
             // Attempt to refresh access token
+
             const refreshToken = localStorage.getItem("refreshToken");
+            console.log(refreshToken);
 
             if (refreshToken) {
               const baseUrl = import.meta.env.VITE_API_URL;
-
+              console.log(baseUrl);
               try {
-                const refreshResponse = await fetch(`${baseUrl}/auth/token`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${refreshToken}`,
-                  },
-                  credentials: "include",
-                });
+                const refreshResponse = await fetch(
+                  `${baseUrl}/auth/access-token`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${refreshToken}`,
+                    },
+                    credentials: "include",
+                  }
+                );
                 if (refreshResponse.ok) {
                   const refreshedData = await refreshResponse.json();
                   dispatch(setCurrentUser(refreshedData?.user));
                 } else {
+                  localStorage.removeItem("user");
                   dispatch(clearCurrentUser());
                 }
               } catch (error) {
+                localStorage.removeItem("user");
                 dispatch(clearCurrentUser());
               }
             } else {
+              localStorage.removeItem("user");
               dispatch(clearCurrentUser());
             }
           }

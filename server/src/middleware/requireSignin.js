@@ -7,13 +7,15 @@ const requireSignin = async (req, res, next) => {
     const { a_t } = req.cookies;
 
     if (!a_t) {
-      throw new CustomErrorHandler("Access Denied", 403);
+      return next(new CustomErrorHandler("Access Denied", 403));
     }
 
-    const payload = verifyToken(a_t, JWT_SECRET);
-
-    if (!payload) {
-      throw new CustomErrorHandler("Access Denied", 403);
+    let payload;
+    try {
+      payload = verifyToken(a_t, JWT_SECRET);
+    } catch (error) {
+      console.log(error);
+      return next(new CustomErrorHandler("Invalid token", 401));
     }
 
     req.user = payload;
@@ -21,7 +23,7 @@ const requireSignin = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    throw new CustomErrorHandler("Invalid token", 401);
+    return next(new CustomErrorHandler("Invalid token", 401));
   }
 };
 

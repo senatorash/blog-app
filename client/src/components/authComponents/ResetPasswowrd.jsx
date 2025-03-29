@@ -13,6 +13,7 @@ const ResetPassword = () => {
 
   console.log(data);
   console.log(error);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 

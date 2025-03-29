@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import { MdLogin } from "react-icons/md";
-// import { GoogleLogin } from "@react-oauth/google";
-import { useLoginUserMutation } from "../../lib/apis/authApis";
-import { useGetCurrentUserMutation } from "../../lib/apis/userApis";
+import { GoogleLogin } from "@react-oauth/google";
+import {
+  useLoginUserMutation,
+  useLoginUserWithGoogleMutation,
+} from "../../lib/apis/authApis";
 import classes from "../authComponents/Auth.module.css";
 import logo from "../../assets/ProAsh.png";
 import ErrorCard from "../error/ErrorCard";
@@ -15,38 +16,80 @@ import SuccessCard from "../success/SuccessCard";
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [useGetCurrentUser, { data: _data }] = useGetCurrentUserMutation();
 
   const [loginUser, { data, error, isError, isSuccess }] =
     useLoginUserMutation();
 
-  const navigate = useNavigate();
-
-  const { user } = useSelector((state) => state.userState);
-  console.log(user);
+  const [loginUserWithGoogle, { data: _data, isSuccess: _isSuccess }] =
+    useLoginUserWithGoogleMutation();
   console.log(_data);
-  console.log(data);
-  console.log(isSuccess);
+  console.log(_isSuccess);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!email || !password) {
       return;
     }
-    await loginUser({ email, password });
+    const response = await loginUser({ email, password }).unwrap();
+
+    if (response.data) {
+      const { refreshTokenExpiry, refreshToken } = response.data;
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem(
+        "refreshTokenExpiry",
+        Date.now() + refreshTokenExpiry
+      );
+    }
+  };
+
+  const googleResponse = async (response) => {
+    await loginUserWithGoogle({ token: response.credential });
   };
 
   useEffect(() => {
-    useGetCurrentUser();
-  }, []);
+    if (_isSuccess && _data) {
+      const timer = setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [_isSuccess, _data, navigate]);
 
   useEffect(() => {
     if (isSuccess && data) {
       localStorage.setItem("refreshToken", data?.refreshToken);
-      navigate("/dashboard");
+      const timer = setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
+      return () => clearTimeout(timer);
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, data, navigate]);
 
+  // check if refreshToken has expired
+  const checkTokenExpiry = () => {
+    const expiryTime = localStorage.getItem("refreshTokenExpiry");
+    if (expiryTime && Date.now() > expiryTime) {
+      localStorage.clear();
+      navigate("/auth/signin");
+    }
+  };
+
+  // check refreshToken expiry every 60 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      checkTokenExpiry();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // check token expiry on component mount
+  useEffect(() => {
+    checkTokenExpiry();
+  }, []);
+
+  // animate on scroll
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -97,6 +140,7 @@ const Signin = () => {
                 className="form-control"
                 type="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
@@ -121,7 +165,7 @@ const Signin = () => {
               </Link>
             </div>
 
-            {/* <GoogleLogin onSuccess="" /> */}
+            <GoogleLogin onSuccess={googleResponse} />
             <div className="form-group mb-3">
               <input
                 type="submit"

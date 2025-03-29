@@ -31,7 +31,7 @@ const loginUser = async (req, res, next) => {
 
     if (authCredentials) {
       const cookieOptions = {
-        expires: new Date(Date.now() + 30 * 1000),
+        expires: new Date(Date.now() + 60 * 60 * 1000),
         maxAge: 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "None",
@@ -44,6 +44,7 @@ const loginUser = async (req, res, next) => {
         .json({
           message: "User Login Successfully",
           refreshToken: authCredentials.refreshToken,
+          refreshTokenExpiry: authCredentials.refreshTokenExpiry,
         });
     }
   } catch (error) {
@@ -55,6 +56,7 @@ const logoutUser = async (req, res, next) => {
   try {
     return res.clearCookie("a_t").json({ message: "logged out successfully" });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

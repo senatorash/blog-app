@@ -27,12 +27,11 @@ const SetNewPassword = () => {
   console.log(data);
   console.log(error);
   console.log(isError);
+  console.log(isSuccess);
   const [
     verifyPasswordResetData,
     { isError: _isError, isSuccess: _isSuccess, data: _data, error: _error },
   ] = useVerifyPasswordResetDataMutation();
-
-  console.log(_data);
 
   useEffect(() => {
     if (resetPasswordData) {
@@ -68,7 +67,7 @@ const SetNewPassword = () => {
     if (isSuccess) {
       navigate("/auth/signin");
     }
-  }, []);
+  }, [isSuccess, navigate]);
 
   useEffect(() => {
     AOS.init({
@@ -105,7 +104,7 @@ const SetNewPassword = () => {
                    */}
                   <FaUserLock />
                 </span>
-                Set Password
+                Set New Password
               </h1>
               <p
                 className="text-start"

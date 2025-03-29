@@ -1,14 +1,10 @@
-// import { Routes, Route } from "react-router-dom";
-// import Dashboard from "./components/dashboard/Dashboard";
 import Layout from "./layouts/Layout";
+console.log(import.meta.env.VITE_CLIENT_ID);
 
 const App = () => {
   return (
     <>
       <Layout />
-      {/* <Routes>
-        <Route path="dashboard" element={<Dashboard />} />
-      </Routes> */}
     </>
   );
 };

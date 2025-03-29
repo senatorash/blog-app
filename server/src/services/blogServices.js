@@ -1,9 +1,8 @@
-const getPagination = require("../helpers/paginationHelpers");
 const Blog = require("../model/blogModel");
+const CustomErrorHandler = require("../lib/CustomErrorHandler");
 
-const createNewBlog = async (title, description, content, userId) => {
-  const blogData = { title, description, content, user: userId };
-
+const createNewBlog = async (title, description, category, content, userId) => {
+  const blogData = { title, description, category, content, user: userId };
   const blog = new Blog(blogData);
   await blog.save();
   if (blog) {
@@ -20,41 +19,35 @@ const allBlogs = async (skip, limit) => {
       .populate("user", "email _id");
 
     return blogs;
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
+  } catch (error) {}
 };
 
 const blogById = async (blogId) => {
   try {
     const blog = await Blog.findById({ blogId });
     if (!blog) {
-      throw new Error();
+      throw new CustomErrorHandler("Blog not found", 404);
     }
-    return res.status(200).json({ message: "Blog found successfully", blog });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
+    return blog;
+  } catch (error) {}
 };
 
 const publishedState = async (blogId) => {
   try {
     const blog = await Blog.findById(blogId);
     return blog;
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
+  } catch (error) {}
 };
 
 const checkBlogExistByTitle = async (blogTitle) => {
   try {
     const blog = await Blog.findOne({ title: blogTitle });
     if (!blog) {
-      throw new Error();
+      throw new CustomErrorHandler("Blog not found", 404);
     }
     return blog;
   } catch (error) {
-    throw new Error();
+    throw error;
   }
 };
 

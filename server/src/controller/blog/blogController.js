@@ -1,6 +1,5 @@
-Blog = require("../../model/blogModel");
-const getPagination = require("../../helpers/paginationHelpers");
 const Blog = require("../../model/blogModel");
+const getPagination = require("../../helpers/paginationHelpers");
 const {
   createNewBlog,
   allBlogs,
@@ -13,12 +12,14 @@ const {
 
 const createBlog = async (req, res, next) => {
   try {
-    const { title, description, content } = req.body;
+    const { title, description, category, content } = req.body;
     const { userId } = req.user;
+    console.log(userId);
 
     const createdBlog = await createNewBlog(
       title,
       description,
+      category,
       content,
       userId
     );
@@ -37,12 +38,14 @@ const createBlog = async (req, res, next) => {
 const getAllBlogs = async (req, res, next) => {
   try {
     const { skip, limit } = getPagination(req.query);
-    const getAllBlogs = await allBlogs(skip, limit);
-    if (!getAllBlogs) {
+    const blogs = await allBlogs(skip, limit);
+    if (!blogs) {
       return res.status(404).json({ message: "No blogs found" });
     }
 
-    return res.status(200).json("blogs Fetched successfully", getAllBlogs);
+    return res
+      .status(200)
+      .json({ message: "blogs Fetched successfully", blogs });
   } catch (error) {
     next(error);
   }
@@ -61,7 +64,7 @@ const getBlogById = async (req, res, next) => {
   }
 };
 
-const getBlogByTitle = async () => {
+const getBlogByTitle = async (req, res, next) => {
   try {
     const { blogTitle } = req.params;
     const blog = await checkBlogExistByTitle(blogTitle);
@@ -69,7 +72,9 @@ const getBlogByTitle = async () => {
       return res.status(404).json({ message: "Blog not found" });
     }
     return res.status(200).json({ message: "Blog found successfully", blog });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updatePublishedState = async (req, res) => {
