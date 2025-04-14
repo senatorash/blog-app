@@ -9,6 +9,7 @@ import ResetPassword from "../components/authComponents/ResetPasswowrd";
 import Dashboard from "../components/dashboard/Dashboard";
 import ProtectedRoutes from "./ProtectedRoutes";
 import SetNewPassword from "../components/authComponents/setNewPassword";
+import NewBlog from "../components/blog/NewBlog";
 
 const AppRoutes = () => {
   const { user } = useSelector((state) => state.userState);
@@ -34,6 +35,8 @@ const AppRoutes = () => {
           element={<SetNewPassword />}
         />
       </Route>
+
+      <Route path="/blog/create" element={<NewBlog />} />
 
       <Route
         path="/dashboard"

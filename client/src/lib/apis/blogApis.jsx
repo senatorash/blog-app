@@ -8,7 +8,7 @@ export const blogApis = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
 
   endpoints: (builder) => ({
-    createUser: builder.mutation({
+    createBlog: builder.mutation({
       query: (blogData) => ({
         url: "/blog/create",
         method: "POST",
@@ -23,3 +23,5 @@ export const blogApis = createApi({
     }),
   }),
 });
+
+export const { useCreateBlogMutation } = blogApis;

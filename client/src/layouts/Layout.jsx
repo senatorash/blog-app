@@ -7,19 +7,21 @@ const Layout = () => {
   const location = useLocation();
   return (
     <>
-      {location.pathname !== "/dashboard" && (
-        <header>
-          <NavBar />
-        </header>
-      )}
+      {location.pathname !== "/dashboard" &&
+        location.pathname !== "/blog/create" && (
+          <header>
+            <NavBar />
+          </header>
+        )}
       <main>
         <AppRoutes />
       </main>
-      {location.pathname !== "/dashboard" && (
-        <footer>
-          <Footer />
-        </footer>
-      )}
+      {location.pathname !== "/dashboard" &&
+        location.pathname !== "/blog/create" && (
+          <footer>
+            <Footer />
+          </footer>
+        )}
     </>
   );
 };
