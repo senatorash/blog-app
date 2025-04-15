@@ -23,6 +23,13 @@ const MenuBar = () => {
 
   if (!editor) return null;
 
+  const getActiveHeadingLevel = () => {
+    for (let level = 1; level <= 6; level++) {
+      if (editor.isActive("heading", { level })) return String(level);
+    }
+    return "";
+  };
+
   return (
     <div className="control-group">
       <div className="button-group">
@@ -105,7 +112,7 @@ const MenuBar = () => {
           <FaPalette />
         </button>
         {/* Headings */}
-        {[1, 2, 3, 4, 5, 6].map((level) => (
+        {/* {[1, 2, 3, 4, 5, 6].map((level) => (
           <button
             key={level}
             onClick={() =>
@@ -115,7 +122,28 @@ const MenuBar = () => {
           >
             <FaHeading style={{ fontSize: `${12 + level}px` }} />
           </button>
-        ))}
+        ))} */}
+
+        <div className="heading-dropdown">
+          <select
+            value={getActiveHeadingLevel()}
+            onChange={(e) => {
+              const level = parseInt(e.target.value);
+              if (!isNaN(level)) {
+                editor.chain().focus().toggleHeading({ level }).run();
+              }
+            }}
+            className="heading-select"
+          >
+            <option value="">H</option>
+            <option value="1">H1</option>
+            <option value="2">H2</option>
+            <option value="3">H3</option>
+            <option value="4">H4</option>
+            <option value="5">H5</option>
+            <option value="6">H6</option>
+          </select>
+        </div>
       </div>
     </div>
   );

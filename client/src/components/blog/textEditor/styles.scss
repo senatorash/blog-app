@@ -1,9 +1,12 @@
+$black: #000;
+$white: #fff;
 /* Control group styling */
 .control-group {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  margin-left: -7rem;
+  // padding: 10px;
   // background-color: #f8f9fa;
   border-radius: 6px;
 }
@@ -11,6 +14,9 @@
 /* Button group layout */
 .button-group {
   display: flex;
+  // background-color: #ddd;
+  background: white;
+  // padding: 10px;
   flex-wrap: wrap;
   gap: 8px;
 }
@@ -19,27 +25,49 @@
 button {
   padding: 8px 12px;
   border: none;
-  background: #007bff;
-  color: white;
+  // background: #007bff;
+  background: white;
+  // color: white;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 10px;
   transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-  background: #0056b3;
+  background: #ddd;
 }
 
 /* Active state for formatting buttons */
 .is-active {
-  background: #0056b3;
-  color: white;
+  background: #ddd;
+  // color: white;
   font-weight: bold;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Heading styles */
+.heading-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.heading-select {
+  padding: 4px;
+  font-size: 0.85rem;
+  font-weight:600;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.heading-select option {
+font-weight: 600;
+font-size: small;
+}
+
+
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
   margin-top: 2.5rem;
@@ -69,39 +97,39 @@ h4, h5, h6 {
 
 /* Inline code style */
 code {
-  // background-color: var(--purple-light);
-  background-color: #0000;
+  background-color: purple;
   border-radius: 0.4rem;
-  color: var(--black);
+  color: white;
   font-size: 0.85rem;
   padding: 0.25em 0.3em;
 }
 
 /* Code block style */
 pre {
-  // background: var(--black);
-  background-color: #0000;
+  background: $black;
   border-radius: 0.5rem;
-  color: var(--white);
+  color: white;
   font-family: 'JetBrainsMono', monospace;
   margin: 1.5rem 0;
-  padding: 0.75rem 1rem;
+  // padding: 0.75rem 1rem;
 }
 
 pre code {
-  // background: none;
-  background-color: #0000;
+  background: none;
   color: inherit;
   font-size: 0.8rem;
   padding: 0;
 }
 
 /* List styling */
-ul,ol {
+ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+ul, ol {
   padding:0 1rem;
   margin: 1.25rem 1rem 1.25rem 0.4rem;
-  list-style-position: inside;
-  list-style-type: decimal !important;
 
 }
 li p {
@@ -109,75 +137,22 @@ li p {
   margin-bottom: 0.25em;
 }
 
+p {
+  color: $black;
+  font-weight: 200;
+  font: 15px sans-serif; /* This is experimental; use fallback if needed */
+}
+
 blockquote {
-  border-left: 3px solid var(--gray-3);
+  border-left: 3px solid gray;
   margin: 1.5rem 0;
   padding-left: 1rem;
 }
 
 hr {
   border: none;
-  border-top: 1px solid var(--gray-2);
+  border-top: 1px solid grey;
   margin: 2rem 0;
 }
 
-
-
-
-// .tiptap {
-//     :first-child {
-//       margin-top: 0;
-//     }
-  
-//     /* List styles */
-//     ul, 
-//     ol {
-//       padding: 0 1rem;
-//       margin: 1.25rem 1rem 1.25rem 0.4rem;
-      
-//       li p {
-//         margin-top: 0.25em;
-//         margin-bottom: 0.25em;
-//       }
-//     }
-  
-//     
-  
-//     /* Code and preformatted text styles */
-//     code {
-//       background-color: var(--purple-light);
-//       border-radius: 0.4rem;
-//       color: var(--black);
-//       font-size: 0.85rem;
-//       padding: 0.25em 0.3em;
-//     }
-  
-//     pre {
-//       background: var(--black);
-//       border-radius: 0.5rem;
-//       color: var(--white);
-//       font-family: 'JetBrainsMono', monospace;
-//       margin: 1.5rem 0;
-//       padding: 0.75rem 1rem;
-  
-//       code {
-//         background: none;
-//         color: inherit;
-//         font-size: 0.8rem;
-//         padding: 0;
-//       }
-//     }
-  
-    // blockquote {
-    //   border-left: 3px solid var(--gray-3);
-    //   margin: 1.5rem 0;
-    //   padding-left: 1rem;
-    // }
-  
-    // hr {
-    //   border: none;
-    //   border-top: 1px solid var(--gray-2);
-    //   margin: 2rem 0;
-    // }
-  // }
   

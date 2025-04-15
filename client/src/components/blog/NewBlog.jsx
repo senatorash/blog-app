@@ -28,7 +28,7 @@ const NewBlog = () => {
   };
   return (
     <section className="container" style={{ overflow: "hidden" }}>
-      <div className=" fixed-top d-flex justify-content-between align-items-center mb-3">
+      <nav className=" fixed-top d-flex justify-content-between align-items-center mb-3">
         <div>
           <img src={ProAsh} alt="logo" style={{ width: "80px" }} />
         </div>
@@ -36,10 +36,9 @@ const NewBlog = () => {
           onSubmit={handleSubmit}
           type="submit"
           className="btn btn-primary"
-          placeholder="Create Blog
-          "
+          // placeholder="Create Blog"
         />
-      </div>
+      </nav>
       <div className="row">
         <div className="col-lg-2 col-12"></div>
         <div className="col-lg-8 col-12">
@@ -54,13 +53,21 @@ const NewBlog = () => {
             />
           </div>
           <div className="">
-            <input
+            <textarea
               type="text"
               placeholder="Description"
-              style={{ border: "none", outline: "none", fontSize: "20px" }}
+              style={{
+                width: "85%",
+                height: "100px",
+                border: "none",
+                outline: "none",
+                fontSize: "15px",
+                resize: "none",
+                padding: "10px",
+              }}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-            />
+            ></textarea>
           </div>
 
           <div className="">
